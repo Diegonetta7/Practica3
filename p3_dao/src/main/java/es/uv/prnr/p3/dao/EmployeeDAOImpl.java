@@ -2,14 +2,13 @@ package es.uv.prnr.p3.dao;
 
 import java.util.List;
 import javax.persistence.EntityManager;
-//TODO Cambiar este import por el que corresponda a vuestro proyecto/clase
 import es.uv.prnr.p2.*;
 
-public class EmployeeDAOImpl extends DAOImpl<Integer,Employee>
-	implements EmployeeDAO{
-	
+public class EmployeeDAOImpl extends DAOImpl<Integer, Employee>
+		implements EmployeeDAO {
+
 	public EmployeeDAOImpl(EntityManager em) {
-		super(em,Employee.class);
+		super(em, Employee.class);
 	}
 
 	public Employee getEmployeeById(int id) {
@@ -24,9 +23,24 @@ public class EmployeeDAOImpl extends DAOImpl<Integer,Employee>
 		this.create(e);
 	}
 
-	// TODO Completad metodos a implementar del ejercicio 1
+	/**
+	 * Método añadido en el ejercicio 1.3.
+	 * 
+	 * Elimina un empleado tomando su id como argumento.
+	 */
+	@Override
+	public boolean deleteEmployeeById(int id) {
+		return this.deleteById(id);
+	}
 
-
-
+	/**
+	 * Método añadido en el ejercicio 1.3.
+	 * 
+	 * Busca todos los empleados cuyo nombre sea el pasado como parámetro.
+	 */
+	@Override
+	public List<Employee> getByFirstName(String firstName) {
+		return this.findByCriteria("e.firstName = '" + firstName + "'");
+	}
 
 }
