@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+	version="2.0">
+
+	<persistence-unit name="acmeEmployees"
+		transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+		<class>es.uv.prnr.p2.Employee</class>
+		<class>es.uv.prnr.p2.Department</class>
+		<class>es.uv.prnr.p2.Manager</class>
+		<class>es.uv.prnr.p2.Project</class>
+		<class>es.uv.prnr.p2.ProjectHours</class>
+		<class>es.uv.prnr.p2.Salary</class>
+		<class>es.uv.prnr.p2.SalaryId</class>
+		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+		<properties>
+			<property name="javax.persistence.jdbc.url"
+				value="jdbc:mysql://localhost:3306/employees?serverTimezone=Europe/Madrid" />
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+			<property name="javax.persistence.jdbc.user" value="root" />
+			<property name="javax.persistence.jdbc.password" value="rootroot" />
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.format_sql" value="true" />
+			<property name="hbm2ddl.auto" value="update" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect" />
+		</properties>
+	</persistence-unit>
+
+</persistence>
