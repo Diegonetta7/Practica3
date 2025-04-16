@@ -28,7 +28,6 @@ public class EmployeeDAOImpl extends DAOImpl<Integer, Employee>
 	 * 
 	 * Elimina un empleado tomando su id como argumento.
 	 */
-	@Override
 	public boolean deleteEmployeeById(int id) {
 		return this.deleteById(id);
 	}
@@ -38,9 +37,7 @@ public class EmployeeDAOImpl extends DAOImpl<Integer, Employee>
 	 * 
 	 * Busca todos los empleados cuyo nombre sea el pasado como parámetro.
 	 */
-	@Override
 	public List<Employee> getByFirstName(String firstName) {
 		return this.findByCriteria("e.firstName = '" + firstName + "'");
 	}
-
 }
