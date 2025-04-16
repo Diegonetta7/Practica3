@@ -17,6 +17,7 @@ public abstract class DAOImpl<K,T> implements DAO<K,T>{
 		this.entityClass = entityClass;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<T> findAll(){
 		Query q = em.createQuery("from " + this.entityClass.getName());
 		return q.getResultList();	

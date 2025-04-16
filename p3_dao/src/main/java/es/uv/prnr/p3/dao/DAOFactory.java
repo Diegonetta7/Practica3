@@ -13,6 +13,8 @@ public abstract class DAOFactory {
 				return new JPADAOFactory();
 			/*case XML:
 				return new XMLDAOFactory();*/
+			default:
+				break;
 		}
 		return null;
 	}
