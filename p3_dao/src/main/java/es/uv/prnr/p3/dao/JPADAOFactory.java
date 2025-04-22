@@ -17,7 +17,8 @@ public class JPADAOFactory extends DAOFactory {
 		return new EmployeeDAOImpl(getEntityManager());
 	}
 	
-	//TODO Implementad el getProjectDAO del ejercicio 2
-	
+	public ProjectDAO getProjectDAO() {
+		return new ProjectDAOImpl(getEntityManager());
+	}
 
 }
