@@ -64,7 +64,7 @@ public class Project {
 	@Column(nullable = false)
 	private String area;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "fk_manager", nullable = false)
 	private Manager manager;
 
