@@ -20,4 +20,6 @@ public interface ProjectDAO {
     public boolean deleteProjectById(int id);
 
     public List<Project> getByName(String name);
+
+    void assignTeam(Project p, int startId, int endId);
 }

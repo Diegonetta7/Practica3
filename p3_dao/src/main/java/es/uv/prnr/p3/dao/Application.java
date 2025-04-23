@@ -86,6 +86,9 @@ public class Application {
 			System.out.println("No se encontró ningún proyecto con ese nombre.");
 		}
 
+		System.out.println("Asignamos el nuevo proyecto");
+		repository.assignTeam(newProject, 20001, 20003);
+		p.print();
 		System.out.println("Eliminamos el proyecto creado");
 		boolean deleted = repository.deleteProjectById(newProject.getId());
 
