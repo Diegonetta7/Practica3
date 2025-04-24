@@ -82,27 +82,27 @@ public class P3SpringApplication implements CommandLineRunner{
 	public void TestConnection() {
 		Employee e = employeesRepo.findById(10003).orElse(null);
 		
-		System.out.println(e.getLastName());
+		// System.out.println(e.getLastName());
 		
-		List<Employee> q1 = employeesRepo.findByLastNameOrFirstName( "Erde","Georgi");
+		// List<Employee> q1 = employeesRepo.findByLastNameOrFirstName( "Erde","Georgi");
 		
-		List<Employee> q2 =employeesRepo. getByIdLessThan(10005);
-		
-		
-		List<Employee> q3 = employeesRepo.findFirst10ByFirstName("Georgi", PageRequest.of(10,1));
-		List<Employee> q4 = employeesRepo.findEmployeeDistinctByFirstName("Georgi");
-		
-		Employee kid = employeesRepo.findTopByOrderByBirthDateDesc();
+		// List<Employee> q2 =employeesRepo. getByIdLessThan(10005);
 		
 		
-		//Obtener los empleados alfabéticamente por apellido de la posición 20 
-		//a la 30
-		Page<Employee> topNames = employeesRepo.findAll(
-				PageRequest.of(20,30,Sort.Direction.ASC,"lastName"));
+		// List<Employee> q3 = employeesRepo.findFirst10ByFirstName("Georgi", PageRequest.of(10,1));
+		// List<Employee> q4 = employeesRepo.findEmployeeDistinctByFirstName("Georgi");
+		
+		// Employee kid = employeesRepo.findTopByOrderByBirthDateDesc();
 		
 		
-		for(Employee eTop: topNames)
-			System.out.println(eTop.getLastName());
+		// //Obtener los empleados alfabéticamente por apellido de la posición 20 
+		// //a la 30
+		// Page<Employee> topNames = employeesRepo.findAll(
+		// 		PageRequest.of(20,30,Sort.Direction.ASC,"lastName"));
+		
+		
+		// for(Employee eTop: topNames)
+		// 	System.out.println(eTop.getLastName());
 		
 	}
 	
