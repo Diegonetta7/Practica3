@@ -4,7 +4,7 @@ public abstract class DAOFactory {
 	
 	public enum TYPE {JPA,XML}
 	
-	//TODO Ejercicio 2: Añadir la recuperación de una clase DAO para la entidad Project
+	public abstract ProjectDAO getProjectDAO();
 	
 	
 	public static DAOFactory getDAOFactory(TYPE t){

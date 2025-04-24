@@ -39,4 +39,9 @@ public class ProjectDAOImpl extends DAOImpl<Integer, Project>
     public List<Project> getByName(String name) {
         return this.findByCriteria("e.name = '" + name + "'");
     }
+
+    public void assignTeam(Project p, int startId, int endId){
+        ProjectService service = new ProjectService();
+        service.assignTeam(p, startId, endId);
+    }
 }

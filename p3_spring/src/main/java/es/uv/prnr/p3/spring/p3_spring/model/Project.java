@@ -1,41 +1,10 @@
-package es.uv.prnr.p2;
+package es.uv.prnr.p3.spring.p3_spring.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.*;
-
-// JPQL de Ejercicio3 employeeInProject 
-@NamedQuery(name = "Project.findEmployee", query = "SELECT COUNT(p) FROM Project p JOIN p.team e " +
-		"WHERE e.firstName = :firstName AND e.last_name = :lastName " +
-		"AND p.id = :projectId")
-
-// JPQL de Ejercicio3 getTopHoursMonth
-@NamedQuery(name = "Project.getTopMonths", query = "SELECT ph.month, SUM(ph.hours) AS total_hours " +
-		"FROM ProjectHours ph " +
-		"JOIN ph.project p " +
-		"WHERE p.id = :projectId AND ph.year = :year " +
-		"GROUP BY ph.month " +
-        "ORDER BY total_hours DESC")
-
-// Consulta SQL para getMonthly Budget.
-@NamedNativeQuery(name = "Project.getMonthlyBudget", query = "WITH EmployeeCost AS ( " +
-		"SELECT s.emp_no, (s.salary / 1650) AS coste_hora " +
-		"FROM salaries s) " +
-		"SELECT ph.month, ph.year, SUM(ec.coste_hora * ph.hours) AS presupuesto_total " +
-		"FROM monthly_hours ph " +
-		"JOIN EmployeeCost ec ON ph.fk_employee = ec.emp_no " +
-		"WHERE ph.fk_project = :projectId " +
-		"GROUP BY ph.year, ph.month " +
-		"ORDER BY ph.year, ph.month ", resultSetMapping = "MonthBudgetMapping")
-
-// Mapeo del ResultSet para la consulta anterior
-@SqlResultSetMapping(name = "MonthBudgetMapping", classes = @ConstructorResult(targetClass = MonthlyBudget.class, columns = {
-		@ColumnResult(name = "month", type = Integer.class),
-		@ColumnResult(name = "year", type = Integer.class),
-		@ColumnResult(name = "presupuesto_total", type = Float.class)
-}))
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "project")

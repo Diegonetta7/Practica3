@@ -1,5 +1,6 @@
 package es.uv.prnr.p3.dao;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
@@ -8,6 +9,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import es.uv.prnr.p2.Employee;
+import es.uv.prnr.p2.Department;
+import es.uv.prnr.p2.Manager;
+import es.uv.prnr.p2.Project;
 
 public class Application {
 
@@ -17,10 +21,11 @@ public class Application {
 		EmployeeDAOImpl repository = new EmployeeDAOImpl(em);
 
 		// testConnection(repository);
-		testExercise1(repository);
+		// testExercise1(repository);
 
-		// TODO Obtener el DAO mediante la factoria
-		// testExercise2(projectRepo);
+		DAOFactory daoFactory = DAOFactory.getDAOFactory(DAOFactory.TYPE.JPA);
+		ProjectDAO projectDAO = daoFactory.getProjectDAO();
+		testExercise2(projectDAO);
 
 	}
 
@@ -51,21 +56,47 @@ public class Application {
 		repository.deleteEmployeeById(e.getId());
 	}
 
-	/*
-	 * public static void testExercise2(ProjectDAO repository) {
-	 * 
-	 * 
-	 * List<Project> currentProjects = repository.getProjects();
-	 * System.out.println(currentProjects.size() + " proyectos encontrados");
-	 * 
-	 * // Recuperamos el proyecto que hemos creado
-	 * p = repository.getProjectById(currentProjects.get(0 ).getId());
-	 * p.print();
-	 * 
-	 * System.out.println("Asignamos el nuevo proyecto");
-	 * repository.assignTeam(p, 20001, 20003);
-	 * p.print();
-	 * 
-	 * }
-	 */
+	public static void testExercise2(ProjectDAO repository) {
+		Department department = new Department("d008", "Research");
+		Employee employee = new Employee(1, "Remko", "Master",
+				LocalDate.of(1923, 8, 19), LocalDate.now(), Employee.Gender.M);
+		Manager manager = new Manager(employee, 0L);
+
+		Project newProject = new Project("Test amazing things", department, manager, new BigDecimal("35000.50"),
+				LocalDate.of(2024, 1, 1), LocalDate.of(2024, 1, 1), "Testing");
+
+		repository.createProject(newProject);
+		System.out.println("Proyecto \"" + newProject.getName() + "\" añadido con éxito");
+
+		Project p = repository.getProjectById(newProject.getId());
+		if (p != null) {
+			System.out.println("Proyecto recuperado por ID:");
+			p.print();
+		} else {
+			System.out.println("No se encontró el proyecto por ID.");
+		}
+
+		System.out.println("Buscamos el proyecto por nombre:");
+		List<Project> resultsByName = repository.getByName("Test amazing things");
+		if (!resultsByName.isEmpty()) {
+			for (Project project : resultsByName) {
+				project.print();
+			}
+		} else {
+			System.out.println("No se encontró ningún proyecto con ese nombre.");
+		}
+
+		System.out.println("Asignamos el nuevo proyecto");
+		repository.assignTeam(newProject, 20001, 20003);
+		p.print();
+		System.out.println("Eliminamos el proyecto creado");
+		boolean deleted = repository.deleteProjectById(newProject.getId());
+
+		if (deleted) {
+			System.out.println("El proyecto fue eliminado correctamente.");
+		} else {
+			System.out.println("¡Error! El proyecto aún existe:");
+		}
+	}
+
 }
