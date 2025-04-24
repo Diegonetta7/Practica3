@@ -18,7 +18,7 @@ public class Employee {
 	private String firstName;
 
 	@Column(name = "last_name", unique = false, nullable = false, length = 14)
-	private String last_name;
+	private String lastName;
 
 	@Column(name = "birth_date")
 	private LocalDate birthDate;
@@ -51,7 +51,7 @@ public class Employee {
 	public Employee(int id, String firstName, String lastName, LocalDate birthDate, LocalDate hireDate, Gender gender) {
 		this.id = id;
 		this.firstName = firstName;
-		this.last_name = lastName;
+		this.lastName = lastName;
 		this.birthDate = birthDate;
 		this.hireDate = hireDate;
 		this.gender = gender;
@@ -79,11 +79,11 @@ public class Employee {
 	}
 
 	public String getLastName() {
-		return last_name;
+		return lastName;
 	}
 
 	public void setLastName(String lastName) {
-		this.last_name = lastName;
+		this.lastName = lastName;
 	}
 
 	public LocalDate getBirthDate() {
@@ -119,6 +119,6 @@ public class Employee {
 	}
 
 	public void print() {
-		System.out.println(this.id + " " + this.firstName + " " + this.last_name);
+		System.out.println(this.id + " " + this.firstName + " " + this.lastName);
 	}
 }
