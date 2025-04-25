@@ -5,16 +5,15 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
 
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import jakarta.persistence.*;
 
+@Service
 public class ProjectService {
-	EntityManagerFactory emf;
-	EntityManager em;
-
-	public ProjectService() {
-		this.emf = Persistence.createEntityManagerFactory("employees");
-		this.em = emf.createEntityManager();
-	}
+	@PersistenceContext
+    private EntityManager em;
 
 	/**
 	 * Busca un departamento
@@ -22,6 +21,7 @@ public class ProjectService {
 	 * @param id identificador del departamento
 	 * @return entidad con el deparamenteo encontrado
 	 */
+	@Transactional
 	public Department getDepartmentById(String id) {
 		return em.find(Department.class, id);
 	}
@@ -36,10 +36,8 @@ public class ProjectService {
 	 * @param bonus
 	 * @return
 	 */
+	@Transactional
 	public Manager promoteToManager(int employeeId, long bonus) {
-		// Inicia una transacción
-		em.getTransaction().begin();
-
 		// Busca el empleado
 		Employee employee = em.find(Employee.class, employeeId);
 
@@ -51,9 +49,6 @@ public class ProjectService {
 
 		// Guarda el nuevo Manager
 		em.persist(manager);
-
-		// Confirma la transacción
-		em.getTransaction().commit();
 
 		return manager;
 	}
@@ -68,10 +63,9 @@ public class ProjectService {
 	 * @param budget
 	 * @return el proyecto creado
 	 */
+	@Transactional
 	public Project createBigDataProject(String name, Department d, Manager m,
 			BigDecimal budget) {
-		// Inicia la transacción
-		em.getTransaction().begin();
 
 		// Crea un nuevo proyecto con la información recibida
 		Project project = new Project(
@@ -86,9 +80,6 @@ public class ProjectService {
 		// Persiste el nuevo proyecto en la base de datos
 		em.persist(project);
 
-		// Confirma la transacción
-		em.getTransaction().commit();
-
 		return project;
 	}
 
@@ -101,12 +92,10 @@ public class ProjectService {
 	 * @param endId   identificador final de empleados. Se asume que start id <
 	 *                endId
 	 */
+	@Transactional
 	public void assignTeam(Project p, int startId, int endId) {
 		// Borra los empleados previos
 		p.getEmployees().clear();
-
-		// Inicia la transacción
-		em.getTransaction().begin();
 
 		// Recorre los empleados desde el startId al endId
 		for (int id = startId; id <= endId; id++) {
@@ -118,8 +107,6 @@ public class ProjectService {
 			}
 		}
 
-		// Confirma la transacción
-		em.getTransaction().commit();
 	}
 
 	/**
@@ -130,9 +117,8 @@ public class ProjectService {
 	 * @param projectId
 	 * @return total de horas generadas para el proyecto
 	 */
+	@Transactional
 	public int assignInitialHours(int projectId) {
-		// Inicia la transacción
-		em.getTransaction().begin();
 
 		// Declaración del recuento de horas totales y del Random
 		int horasTotales = 0;
@@ -162,7 +148,6 @@ public class ProjectService {
 		// Confirma la transacción
 		em.merge(p);
 		em.persist(p);
-		em.getTransaction().commit();
 
 		return horasTotales;
 	}

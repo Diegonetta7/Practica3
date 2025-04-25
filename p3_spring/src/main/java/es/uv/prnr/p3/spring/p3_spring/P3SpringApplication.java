@@ -1,7 +1,9 @@
 package es.uv.prnr.p3.spring.p3_spring;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -13,10 +15,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import es.uv.prnr.p3.spring.p3_spring.model.Department;
 import es.uv.prnr.p3.spring.p3_spring.model.Employee;
 import es.uv.prnr.p3.spring.p3_spring.model.Manager;
+import es.uv.prnr.p3.spring.p3_spring.model.NamesOnly;
 import es.uv.prnr.p3.spring.p3_spring.model.Project;
 import es.uv.prnr.p3.spring.p3_spring.model.ProjectService;
 import es.uv.prnr.p3.spring.p3_spring.repository.EmployeeRepository;
@@ -28,6 +32,8 @@ public class P3SpringApplication implements CommandLineRunner {
 	@Autowired
 	private EmployeeRepository employeesRepo;
 	@Autowired
+	private ProjectService service;
+	@Autowired
 	private ProjectAPI api;
 
 	public static void main(String[] args) {
@@ -37,20 +43,75 @@ public class P3SpringApplication implements CommandLineRunner {
 	@SuppressWarnings("unused")
 	@Override
 	public void run(String... strings) throws Exception {
+		//Punto 1
+		List<Project> areaProjects = api.projectsByArea("Big Data");
+		System.out.print("Proyectos encontrados: " + areaProjects.size());
+		
+		//Punto 3
+		List<String> projectTeam = api.getProjectTeam(53);
+		System.out.println("Empleados en el proyecto:");
+		for (String employee : projectTeam) {
+			System.out.println(employee); 
+		}
+
+		//Punto 4
+		Optional<NamesOnly> employeeFound = api.employeeInProject(10003, 53);
+		if (employeeFound.isPresent()) {
+			String name = employeeFound.get().getFirstName();
+			String surname = employeeFound.get().getLastName();
+			System.out.println("Empleado : " + name + " " + surname); 
+		} else {
+			System.out.println("Este empleado no trabaja en ese proyecto"); 
+		}
+		
+		//Punto 5
+		List<Employee> employeeP1Names = api.employeesLike('A', 'A', 0);
+		List<Employee> employeeP2Names = api.employeesLike('A', 'A', 1);
+
+		System.out.println("Empleados de la página 1:");
+		for (Employee employee : employeeP1Names) {
+			System.out.println(employee.getFirstName() + " " + employee.getLastName()); 
+		}
+
+		System.out.println("Empleados de la página 2:");
+		for (Employee employee : employeeP2Names) {
+			System.out.println(employee.getFirstName() + " " + employee.getLastName());
+		}
+
+		//Punto 6
+		BigDecimal totalBudget = api.totalBudgetFromArea("Big Data");
+		System.out.println("Presupuesto total de este Area: " + totalBudget); 
+
+		//Punto 7
+		Project cheapestProject = api.getProjectWithLessBudget();
+		if(cheapestProject != null){
+			System.out.println("Proyecto con menos presupuesto: " + cheapestProject.getName());
+		} else {
+			System.out.println("No hay proyectos en el sistema");
+		}
+		
+		//Punto 8
+		List<Project> activeProjects = api.getActiveProjects(LocalDate.now());
+		System.out.println("Proyectos activos actualmente:");
+		for (Project project : activeProjects) {
+			System.out.println("El proyecto " + project.getName() + " que acaba el " + project.getEndDate());
+		}
+
+		//Punto 9
+		List<Employee> employeesInProject = api.getEmployeesInMoreThanOneProyect();
+		System.out.println("Empleados en mas de un proyecto: ");
+		for (Employee empleado : employeesInProject) {
+			System.out.println(empleado.getFirstName() + " " + empleado.getLastName());
+		}
 
 		/*
-		 * List<Project> areaProjects = api.projectsByArea("Big Data");
-		 * System.out.print("Proyectos encontrados: " + areaProjects.size());
 		 * List<Project> topProjects = api.top3BudgetProjects();
 		 * 
-		 * List<Employee> projectTeam = api.getProjectTeam(53);
 		 * 
-		 * NamesOnly employeeFound = api.employeeInProject(10003, 53);
 		 * 
-		 * List<Employee> employeeP1Names = api.employeesLike('A','A',0);
-		 * List<Employee> employeeP2Names = api.employeesLike('A','A',1);
 		 */
-		TestConnection();
+		// generateProjects();
+		// TestConnection();
 
 		// System.exit(0);
 	}
@@ -60,7 +121,7 @@ public class P3SpringApplication implements CommandLineRunner {
 	 * de la practica 2
 	 */
 	public void generateProjects() {
-		ProjectService service = new ProjectService();
+		System.out.println("Generando proyectos...");
 
 		List<Integer> indexes = IntStream.range(0, 5)
 				.boxed()
