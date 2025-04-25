@@ -62,6 +62,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 			Pageable pageable);
 
 	// Punto 9
-	@Query("SELECT e FROM Employee e JOIN e.projects p GROUP BY e.id HAVING COUNT(p) > 1")
+	@Query("SELECT e FROM Employee e JOIN e.assignedTo p GROUP BY e.id HAVING COUNT(p) > 1")
     List<Employee> findEmployeesInMoreThanOneProject();
 }
