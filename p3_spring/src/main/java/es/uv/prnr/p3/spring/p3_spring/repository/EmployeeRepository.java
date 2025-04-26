@@ -11,16 +11,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
-
 import es.uv.prnr.p3.spring.p3_spring.model.Employee;
 import es.uv.prnr.p3.spring.p3_spring.model.NamesOnly;
-import es.uv.prnr.p3.spring.p3_spring.model.Project;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
-
-	// TODO Métodos adicionales para el repositorio empleados
 
 	// Búsquedas con condición con distintos operadores
 	List<Employee> findByLastNameOrFirstName(String firstName, String lastName);
@@ -63,5 +58,9 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
 	// Punto 9
 	@Query("SELECT e FROM Employee e JOIN e.assignedTo p GROUP BY e.id HAVING COUNT(p) > 1")
-    List<Employee> findEmployeesInMoreThanOneProject();
+	List<Employee> findEmployeesInMoreThanOneProject();
+
+	// Punto 10
+	@Query("SELECT COUNT(DISTINCT e.id) FROM Employee e JOIN e.assignedTo p WHERE p.area = :areaName")
+	long countEmployeesByArea(@Param("areaName") String areaName);
 }

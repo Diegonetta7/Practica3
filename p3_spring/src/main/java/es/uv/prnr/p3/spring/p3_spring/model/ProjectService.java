@@ -13,7 +13,7 @@ import jakarta.persistence.*;
 @Service
 public class ProjectService {
 	@PersistenceContext
-    private EntityManager em;
+	private EntityManager em;
 
 	/**
 	 * Busca un departamento
@@ -182,7 +182,6 @@ public class ProjectService {
 	 * @param rank      número de meses a mostrar, se asume que rank <= 12
 	 * @return una lista de objetos mes,hora ordenados de mayor a menor
 	 */
-	@SuppressWarnings("unchecked")
 	public List<Object[]> getTopHourMonths(int projectId, int year, int rank) {
 		Query query = em.createNamedQuery("Project.getTopMonths");
 
@@ -201,7 +200,6 @@ public class ProjectService {
 	 * @param projectId
 	 * @return una colección de objetos MonthlyBudget
 	 */
-	@SuppressWarnings("unchecked")
 	public List<MonthlyBudget> getMonthlyBudget(int projectId) {
 		Query query = em.createNamedQuery("Project.getMonthlyBudget");
 

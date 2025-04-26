@@ -35,12 +35,10 @@ public class Employee {
 	};
 
 	/* Necesario referencedColumnName puesto que la fk y pk se llaman igual */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@OneToMany
 	@JoinColumn(name = "emp_no", referencedColumnName = "emp_no", updatable = false)
 	private List<Salary> salaries = new ArrayList();
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@ManyToMany(mappedBy = "team")
 	private List<Project> assignedTo = new ArrayList();
 

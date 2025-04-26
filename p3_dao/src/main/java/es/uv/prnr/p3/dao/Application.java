@@ -20,31 +20,28 @@ public class Application {
 		EntityManager em = emf.createEntityManager();
 		EmployeeDAOImpl repository = new EmployeeDAOImpl(em);
 
-		// testConnection(repository);
-		// testExercise1(repository);
+		testConnection(repository);
+		testExercise1(repository);
 
 		DAOFactory daoFactory = DAOFactory.getDAOFactory(DAOFactory.TYPE.JPA);
 		ProjectDAO projectDAO = daoFactory.getProjectDAO();
 		testExercise2(projectDAO);
-
 	}
 
-	/*
-	 * public static void testConnection(EmployeeDAOImpl repository) {
-	 * int count = 0;
-	 * List<Employee> myEmployees = repository.getEmployees();
-	 * 
-	 * for(Employee e: myEmployees){
-	 * System.out.println(
-	 * e.getFirstName()+" "+ e.getLastName()+" "+
-	 * e.getBirthDate().toString());
-	 * if(count++ > 10)
-	 * break;
-	 * }
-	 * Employee e = repository.getEmployeeById(10007);
-	 * System.out.println("Test Connection getEmployeeById " + e.getFirstName());
-	 * }
-	 */
+	public static void testConnection(EmployeeDAOImpl repository) {
+		int count = 0;
+		List<Employee> myEmployees = repository.getEmployees();
+
+		for (Employee e : myEmployees) {
+			System.out.println(
+					e.getFirstName() + " " + e.getLastName() + " " +
+							e.getBirthDate().toString());
+			if (count++ > 10)
+				break;
+		}
+		Employee e = repository.getEmployeeById(10007);
+		System.out.println("Test Connection getEmployeeById " + e.getFirstName());
+	}
 
 	public static void testExercise1(EmployeeDAOImpl repository) {
 		Employee e = new Employee(1, "Remko", "Master",

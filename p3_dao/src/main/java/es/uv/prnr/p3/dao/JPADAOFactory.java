@@ -6,17 +6,15 @@ import javax.persistence.Persistence;
 
 public class JPADAOFactory extends DAOFactory {
 
-	private EntityManager getEntityManager(){
-		EntityManagerFactory emf =
-				Persistence.createEntityManagerFactory("acmeEmployees");
+	private EntityManager getEntityManager() {
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("acmeEmployees");
 		return emf.createEntityManager();
 	}
-	
 
 	public EmployeeDAO getEmployeeDAO() {
 		return new EmployeeDAOImpl(getEntityManager());
 	}
-	
+
 	public ProjectDAO getProjectDAO() {
 		return new ProjectDAOImpl(getEntityManager());
 	}

@@ -35,7 +35,7 @@ public class ProjectAPI {
 
 	public List<Project> top3BudgetProjects() {
 		List<Project> top3 = new ArrayList();
-		// TODO
+		top3 = projectRepo.findTop3ByOrderByBudgetDesc();
 		return top3;
 	}
 
@@ -53,25 +53,29 @@ public class ProjectAPI {
 		Page<Employee> employeePage = employeesRepo.findByFirstNameStartingWithAndLastNameStartingWith(
 				String.valueOf(charName),
 				String.valueOf(charSurname), pageable);
-		List<Employee> employees = employeePage.getContent(); 
+		List<Employee> employees = employeePage.getContent();
 
 		return employees;
 
 	}
 
-	public BigDecimal totalBudgetFromArea(String area){
+	public BigDecimal totalBudgetFromArea(String area) {
 		return projectRepo.findTotalBudgetByArea(area);
 	}
 
-	public Project getProjectWithLessBudget(){
+	public Project getProjectWithLessBudget() {
 		return projectRepo.findFirstByOrderByBudgetAsc();
 	}
 
-	public List<Project> getActiveProjects(LocalDate date){
+	public List<Project> getActiveProjects(LocalDate date) {
 		return projectRepo.findByEndDateGreaterThanEqual(date);
 	}
 
-	public List<Employee> getEmployeesInMoreThanOneProyect(){
+	public List<Employee> getEmployeesInMoreThanOneProyect() {
 		return employeesRepo.findEmployeesInMoreThanOneProject();
+	}
+
+	public long countEmployeesByArea(String areaName) {
+		return employeesRepo.countEmployeesByArea(areaName);
 	}
 }

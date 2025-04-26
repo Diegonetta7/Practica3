@@ -11,12 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-
 import es.uv.prnr.p3.spring.p3_spring.model.Department;
 import es.uv.prnr.p3.spring.p3_spring.model.Employee;
 import es.uv.prnr.p3.spring.p3_spring.model.Manager;
@@ -43,34 +40,41 @@ public class P3SpringApplication implements CommandLineRunner {
 	@SuppressWarnings("unused")
 	@Override
 	public void run(String... strings) throws Exception {
-		//Punto 1
+		// Punto 1
 		List<Project> areaProjects = api.projectsByArea("Big Data");
 		System.out.print("Proyectos encontrados: " + areaProjects.size());
-		
-		//Punto 3
+
+		// Punto 2
+		List<Project> top3Projects = api.top3BudgetProjects();
+		System.out.print("Top 3 proyectos con más presupuesto: ");
+		for (Project project : top3Projects) {
+			System.out.println(project.getName());
+		}
+
+		// Punto 3
 		List<String> projectTeam = api.getProjectTeam(53);
 		System.out.println("Empleados en el proyecto:");
 		for (String employee : projectTeam) {
-			System.out.println(employee); 
+			System.out.println(employee);
 		}
 
-		//Punto 4
+		// Punto 4
 		Optional<NamesOnly> employeeFound = api.employeeInProject(10003, 53);
 		if (employeeFound.isPresent()) {
 			String name = employeeFound.get().getFirstName();
 			String surname = employeeFound.get().getLastName();
-			System.out.println("Empleado : " + name + " " + surname); 
+			System.out.println("Empleado : " + name + " " + surname);
 		} else {
-			System.out.println("Este empleado no trabaja en ese proyecto"); 
+			System.out.println("Este empleado no trabaja en ese proyecto");
 		}
-		
-		//Punto 5
+
+		// Punto 5
 		List<Employee> employeeP1Names = api.employeesLike('A', 'A', 0);
 		List<Employee> employeeP2Names = api.employeesLike('A', 'A', 1);
 
 		System.out.println("Empleados de la página 1:");
 		for (Employee employee : employeeP1Names) {
-			System.out.println(employee.getFirstName() + " " + employee.getLastName()); 
+			System.out.println(employee.getFirstName() + " " + employee.getLastName());
 		}
 
 		System.out.println("Empleados de la página 2:");
@@ -78,38 +82,37 @@ public class P3SpringApplication implements CommandLineRunner {
 			System.out.println(employee.getFirstName() + " " + employee.getLastName());
 		}
 
-		//Punto 6
+		// Punto 6
 		BigDecimal totalBudget = api.totalBudgetFromArea("Big Data");
-		System.out.println("Presupuesto total de este Area: " + totalBudget); 
+		System.out.println("Presupuesto total de este Area: " + totalBudget);
 
-		//Punto 7
+		// Punto 7
 		Project cheapestProject = api.getProjectWithLessBudget();
-		if(cheapestProject != null){
+		if (cheapestProject != null) {
 			System.out.println("Proyecto con menos presupuesto: " + cheapestProject.getName());
 		} else {
 			System.out.println("No hay proyectos en el sistema");
 		}
-		
-		//Punto 8
+
+		// Punto 8
 		List<Project> activeProjects = api.getActiveProjects(LocalDate.now());
 		System.out.println("Proyectos activos actualmente:");
 		for (Project project : activeProjects) {
 			System.out.println("El proyecto " + project.getName() + " que acaba el " + project.getEndDate());
 		}
 
-		//Punto 9
+		// Punto 9
 		List<Employee> employeesInProject = api.getEmployeesInMoreThanOneProyect();
 		System.out.println("Empleados en mas de un proyecto: ");
 		for (Employee empleado : employeesInProject) {
 			System.out.println(empleado.getFirstName() + " " + empleado.getLastName());
 		}
 
-		/*
-		 * List<Project> topProjects = api.top3BudgetProjects();
-		 * 
-		 * 
-		 * 
-		 */
+		// Punto 10
+		String nombreArea = "Big Data";
+		long count = api.countEmployeesByArea(nombreArea);
+		System.out.println("Número de empleados en el área " + nombreArea + ": " + count);
+
 		// generateProjects();
 		// TestConnection();
 

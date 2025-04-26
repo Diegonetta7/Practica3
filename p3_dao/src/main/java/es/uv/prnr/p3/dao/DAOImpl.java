@@ -3,9 +3,6 @@ package es.uv.prnr.p3.dao;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 public abstract class DAOImpl<K, T> implements DAO<K, T> {
 
