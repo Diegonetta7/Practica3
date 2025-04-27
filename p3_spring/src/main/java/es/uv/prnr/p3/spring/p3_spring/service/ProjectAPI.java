@@ -44,7 +44,7 @@ public class ProjectAPI {
 	}
 
 	public Optional<NamesOnly> employeeInProject(int employeeId, int projectId) {
-		return employeesRepo.findByAssignedTo_IdAndId(employeeId, projectId);
+		return employeesRepo.findByAssignedTo_IdAndId(projectId, employeeId);
 	}
 
 	public List<Employee> employeesLike(char charName, char charSurname, int page) {

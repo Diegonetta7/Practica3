@@ -28,8 +28,10 @@ public class P3SpringApplication implements CommandLineRunner {
 
 	@Autowired
 	private EmployeeRepository employeesRepo;
+
 	@Autowired
 	private ProjectService service;
+
 	@Autowired
 	private ProjectAPI api;
 
@@ -40,6 +42,8 @@ public class P3SpringApplication implements CommandLineRunner {
 	@SuppressWarnings("unused")
 	@Override
 	public void run(String... strings) throws Exception {
+		// generateProjects();
+
 		// Punto 1
 		List<Project> areaProjects = api.projectsByArea("Big Data");
 		System.out.print("Proyectos encontrados: " + areaProjects.size());
@@ -52,14 +56,14 @@ public class P3SpringApplication implements CommandLineRunner {
 		}
 
 		// Punto 3
-		List<String> projectTeam = api.getProjectTeam(53);
+		List<String> projectTeam = api.getProjectTeam(98);
 		System.out.println("Empleados en el proyecto:");
 		for (String employee : projectTeam) {
 			System.out.println(employee);
 		}
 
 		// Punto 4
-		Optional<NamesOnly> employeeFound = api.employeeInProject(10003, 53);
+		Optional<NamesOnly> employeeFound = api.employeeInProject(10007, 95);
 		if (employeeFound.isPresent()) {
 			String name = employeeFound.get().getFirstName();
 			String surname = employeeFound.get().getLastName();
@@ -113,7 +117,6 @@ public class P3SpringApplication implements CommandLineRunner {
 		long count = api.countEmployeesByArea(nombreArea);
 		System.out.println("Número de empleados en el área " + nombreArea + ": " + count);
 
-		// generateProjects();
 		// TestConnection();
 
 		// System.exit(0);
@@ -124,15 +127,13 @@ public class P3SpringApplication implements CommandLineRunner {
 	 * de la practica 2
 	 */
 	public void generateProjects() {
-		System.out.println("Generando proyectos...");
-
 		List<Integer> indexes = IntStream.range(0, 5)
 				.boxed()
 				.collect(Collectors.toList());
 
 		for (Integer i : indexes) {
 			Department proyDepartment = service.getDepartmentById("d00" + (i + 1));
-			int firstEmployeeId = 10001 + (i * 100);
+			int firstEmployeeId = 10011 + (i * 100);
 			Manager projectManager = service.promoteToManager(firstEmployeeId, 1000L);
 			Project acmeProject = service.createBigDataProject("Persistence Layer " + i, proyDepartment, projectManager,
 					new BigDecimal(1500000.99));

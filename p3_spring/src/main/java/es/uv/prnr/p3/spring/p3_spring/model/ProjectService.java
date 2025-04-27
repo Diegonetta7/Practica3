@@ -44,11 +44,18 @@ public class ProjectService {
 		// Crea la nueva instancia de Manager con los datos del empleado
 		Manager manager = new Manager(employee, bonus);
 
-		// Elimina el empleado original (porque comparten la misma clave primaria)
-		em.remove(employee);
-
 		// Guarda el nuevo Manager
 		em.persist(manager);
+
+		// Actualiza las referencias en los proyectos antes de eliminar
+		Query updateProjects = em.createQuery(
+				"UPDATE Project p SET p.manager = :manager WHERE p.manager.id = :employeeId");
+		updateProjects.setParameter("manager", manager);
+		updateProjects.setParameter("employeeId", employeeId);
+		updateProjects.executeUpdate();
+
+		// Elimina el empleado original (porque comparten la misma clave primaria)
+		em.remove(employee);
 
 		return manager;
 	}
